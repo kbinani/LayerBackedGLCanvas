@@ -3,9 +3,9 @@
 #import "LayerBackedGLCanvas.hpp"
 
 #ifndef WX_PRECOMP
-	#include <wx/frame.h>
-	#include <wx/log.h>
-	#include <wx/settings.h>
+    #include <wx/frame.h>
+    #include <wx/log.h>
+    #include <wx/settings.h>
 #endif
 
 #include <wx/osx/private.h>
@@ -15,7 +15,7 @@
 @interface LayerBackedGLCanvasLayer : NSOpenGLLayer
 {
 @private
-	LayerBackedGLCanvas * m_canvas;
+    LayerBackedGLCanvas * m_canvas;
 }
 @end
 
@@ -23,34 +23,34 @@
 
 - (id)init
 {
-	m_canvas = nil;
-	return [super init];
+    m_canvas = nil;
+    return [super init];
 }
 
 - (void)drawInCGLContext:(CGLContextObj)ctx pixelFormat:(CGLPixelFormatObj)pf
-			forLayerTime:(CFTimeInterval)t displayTime:(const CVTimeStamp *)ts
+            forLayerTime:(CFTimeInterval)t displayTime:(const CVTimeStamp *)ts
 {
-	CGLSetCurrentContext(ctx);
-	if (m_canvas) {
-		m_canvas->OnOpenGLDraw(ctx);
-	}
+    CGLSetCurrentContext(ctx);
+    if (m_canvas) {
+        m_canvas->OnOpenGLDraw(ctx);
+    }
 }
 
 - (void)setCanvas:(LayerBackedGLCanvas *)canvas
 {
-	m_canvas = canvas;
+    m_canvas = canvas;
 }
 
 - (BOOL)canDrawInCGLContext:(CGLContextObj)ctx
-				pixelFormat:(CGLPixelFormatObj)pf forLayerTime:(CFTimeInterval)t
-				displayTime:(const CVTimeStamp *)ts
+                pixelFormat:(CGLPixelFormatObj)pf forLayerTime:(CFTimeInterval)t
+                displayTime:(const CVTimeStamp *)ts
 {
-	return m_canvas != nullptr && m_canvas->GetPeer()->GetNeedsDisplay();
+    return m_canvas != nullptr && m_canvas->GetPeer()->GetNeedsDisplay();
 }
 
 - (BOOL)isOpaque
 {
-	return YES;
+    return YES;
 }
 
 @end
@@ -75,10 +75,10 @@
 
 - (CALayer *)makeBackingLayer
 {
-	LayerBackedGLCanvasLayer * result = [[LayerBackedGLCanvasLayer alloc] init];
-	[result setNeedsDisplayOnBoundsChange: YES];
-	[result setAsynchronous: YES];
-	return [result autorelease];
+    LayerBackedGLCanvasLayer * result = [[LayerBackedGLCanvasLayer alloc] init];
+    [result setNeedsDisplayOnBoundsChange: YES];
+    [result setAsynchronous: YES];
+    return [result autorelease];
 }
 
 - (BOOL)acceptsFirstResponder
@@ -88,12 +88,12 @@
 
 - (BOOL)isFlipped
 {
-	return YES;
+    return YES;
 }
 
 - (BOOL)isOpaque
 {
-	return NO;
+    return NO;
 }
 
 @end
@@ -106,43 +106,43 @@ END_EVENT_TABLE()
 
 
 LayerBackedGLCanvas::LayerBackedGLCanvas(wxWindow *parent,
-										 wxWindowID id,
-										 const int *attribList,
-										 const wxPoint& pos,
-										 const wxSize& size,
-										 long style,
-										 const wxString& name,
-										 const wxPalette& palette)
+                                         wxWindowID id,
+                                         const int *attribList,
+                                         const wxPoint& pos,
+                                         const wxSize& size,
+                                         long style,
+                                         const wxString& name,
+                                         const wxPalette& palette)
 {
-	Create(parent, id, pos, size, style, name, attribList, palette);
+    Create(parent, id, pos, size, style, name, attribList, palette);
 }
 
 
 bool LayerBackedGLCanvas::Create(wxWindow *parent,
-								 wxWindowID id,
-								 const wxPoint& pos,
-								 const wxSize& size,
-								 long style,
-								 const wxString& name,
-								 const int *attribList,
-								 const wxPalette& WXUNUSED(palette))
+                                 wxWindowID id,
+                                 const wxPoint& pos,
+                                 const wxSize& size,
+                                 long style,
+                                 const wxString& name,
+                                 const int *attribList,
+                                 const wxPalette& WXUNUSED(palette))
 {
     DontCreatePeer();
     
     if (!wxWindow::Create(parent, id, pos, size, style, name)) {
         return false;
-	}
-	
+    }
+    
     NSRect r = wxOSXGetFrameForControl( this, pos , size ) ;
     LayerBackedGLCanvasView* v = [[LayerBackedGLCanvasView alloc] initWithFrame:r];
-	[v setWantsLayer:YES];
+    [v setWantsLayer:YES];
     [v setWantsBestResolutionOpenGLSurface: YES];
-	LayerBackedGLCanvasLayer * layer = (LayerBackedGLCanvasLayer *)[v layer];
-	[layer setCanvas: this];
-	SetPeer(new wxWidgetCocoaImpl( this, v ));
-	
+    LayerBackedGLCanvasLayer * layer = (LayerBackedGLCanvasLayer *)[v layer];
+    [layer setCanvas: this];
+    SetPeer(new wxWidgetCocoaImpl( this, v ));
+    
     MacPostControlCreate( pos, size );
-	
+    
     return true;
 }
 
@@ -151,6 +151,6 @@ LayerBackedGLCanvas::~LayerBackedGLCanvas()
 
 void LayerBackedGLCanvas::OnOpenGLDraw(CGLContextObj WXUNUSED(context))
 {
-	glClearColor(1.0, 1.0, 1.0, 1.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
