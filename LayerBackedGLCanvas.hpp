@@ -35,7 +35,7 @@ public:
     virtual ~LayerBackedGLCanvas();
 
     /**
-     * @brief   Draw the canavs. Override this function and put your all OpenGL API calls in it.
+     * @brief   Draw the canvas. Override this function and put your all OpenGL API calls in it.
      */
     virtual void OnOpenGLDraw(CGLContextObj context);
 
