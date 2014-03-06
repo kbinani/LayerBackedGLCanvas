@@ -14,14 +14,14 @@
 class LayerBackedGLCanvas : public wxWindow
 {
 public:
-    LayerBackedGLCanvas(wxWindow *parent,
-                        wxWindowID id = wxID_ANY,
-                        const int *attribList = NULL,
-                        const wxPoint& pos = wxDefaultPosition,
-                        const wxSize& size = wxDefaultSize,
-                        long style = 0,
-                        const wxString& name = "",
-                        const wxPalette& palette = wxNullPalette);
+    explicit LayerBackedGLCanvas(wxWindow *parent,
+                                 wxWindowID id = wxID_ANY,
+                                 const int *attribList = NULL,
+                                 const wxPoint& pos = wxDefaultPosition,
+                                 const wxSize& size = wxDefaultSize,
+                                 long style = 0,
+                                 const wxString& name = "",
+                                 const wxPalette& palette = wxNullPalette);
 
     bool Create(wxWindow *parent,
                 wxWindowID id = wxID_ANY,
